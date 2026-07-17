@@ -793,8 +793,8 @@
                 </div>
             </div>
 
-            <!-- ===== CONFIRM BUTTON WITH NEW TELEGRAM TEMPLATE ===== -->
-            <a href="https://t.me/Coachyhubee?text=Hi%20Vireon%20Merchant%2C%0A%0AI%20just%20made%20my%20payment%20of%20%E2%82%A614%2C500%20for%20my%20Vireon%20registration.%0A%0APlease%20find%20my%20proof%20of%20payment%20attached.%0A%0AMy%20details%3A%0A%0A-%20Phone%20Number%3A%20%0A-%20Email%20Address%3A%20%0A%0AKindly%20confirm%20my%20payment%20and%20proceed%20with%20my%20registration.%0A%0AThank%20you." target="_blank" class="btn-confirm">
+            <!-- ===== CONFIRM BUTTON (ID Added for Dynamic Telegram Linking) ===== -->
+            <a id="telegramBtn" href="https://t.me/Coachyhubee" target="_blank" class="btn-confirm">
                 I Have Paid <i class="ri-arrow-right-line" style="margin-left:8px;"></i>
             </a>
 
@@ -892,7 +892,7 @@
         function showPopup() {
             let currentUsername = "Team";
             
-            // Try fetching from both keys you referenced across the script safely
+            // Try fetching from both keys referenced across the script safely
             let username = localStorage.getItem('vireon_username') || localStorage.getItem('registeredUsername');
 
             if (!username) {
@@ -972,7 +972,31 @@
             }, 1000);
         }
 
+        // ============================================================
+        // DYNAMIC TELEGRAM LINK GENERATOR
+        // ============================================================
+        function setupTelegramLink() {
+            // Pull details out of localStorage safely
+            let username = localStorage.getItem('vireon_username') || localStorage.getItem('registeredUsername') || '[Username]';
+            let fullName = localStorage.getItem('vireon_fullname') || localStorage.getItem('registeredFullname') || '[Full Name]';
+            
+            // Your exact requested template text
+            let textMessage = `Hi Vireon Merchant,\n\nI just made my payment of ₦14,500 for my Vireon registration.\n\nPlease find my proof of payment attached.\n\nMy details:\n- Full name: ${fullName}\n- Username: ${username}\n- Phone Number: \n- Email Address: \n\nKindly confirm my payment and proceed with my registration.\n\nThank you.`;
+            
+            // Encode the string safely for URLs
+            let encodedText = encodeURIComponent(textMessage);
+            
+            // Update the anchor tag href link attribute
+            const tgBtn = document.getElementById('telegramBtn');
+            if(tgBtn) {
+                tgBtn.href = `https://t.me/Coachyhubee?text=${encodedText}`;
+            }
+        }
+
         window.onload = function () {
+            // Initialize Dynamic Template Values
+            setupTelegramLink();
+
             // Trigger the Popup Notification cleanly on page load
             setTimeout(showPopup, 400);
 
