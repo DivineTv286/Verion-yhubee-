@@ -777,11 +777,7 @@
             </div>
 
             <!-- ===== BANK DETAILS ===== -->
-            <div x-data="{ 
-                'copied' : false,
-                'timer' : null
-             }" style="margin-bottom: 20px;">
-
+            <div style="margin-bottom: 20px;">
                 <h4 class="bank-section-title">Transfer To:</h4>
                 
                 <div class="bank-card">
@@ -790,28 +786,11 @@
                         <p class="acc-number" id="acc1">3004043969</p>
                         <p class="acc-name">VIREON </p>
                     </div>
-                    <template x-if="!copied">
-                       <button class="copy-btn" x-on:click="
-                       copyText('acc1');
-                       copied = true;
-                       if(timer){
-                        clearTimeout(timer);
-                        }
-                        timer=setTimeout(()=>{
-                            copied=false;
-                            timer=null;
-                        },1500)
-                       " aria-label="Copy Account Number">
+                    <!-- Fixed clean Copy Button matching Amount Display syntax -->
+                    <button class="copy-btn" onclick="copyText('acc1')" aria-label="Copy Account Number">
                         <i class="ri-file-copy-line"></i>
                     </button>
-                    </template>
-                    <template x-if="copied">
-                        <button style="background:#00f2ff; color:#0a192f; border-color:#00f2ff;" class="copy-btn" aria-label="Copied">
-                            <i class="ri-checkbox-circle-line"></i>
-                        </button>
-                    </template>
                 </div>
-                
             </div>
 
             <!-- ===== CONFIRM BUTTON WITH NEW TELEGRAM TEMPLATE ===== -->
@@ -831,7 +810,7 @@
             <button class="popup-close-btn" onclick="closePopup()" aria-label="Close notification">
                 <i class="ri-close-line"></i>
             </button>
-                        <!-- Header (Updated to target with Javascript) -->
+            <!-- Header (Targeted seamlessly via JS) -->
             <div class="popup-header">
                 <h3 id="welcomeUser">Hello Team! 👋</h3>
                 <p>You can now make your payments using any of the <strong>following banks:</strong></p>
@@ -910,11 +889,11 @@
         // POPUP NOTIFICATION INTERACTION & USERNAME SETTER
         // ============================================================
         
-        let currentUsername = "User"; 
-
         function showPopup() {
-            // Attempt to retrieve registeredUsername from localStorage or fallback to URL query string
-            let username = localStorage.getItem('registeredUsername');
+            let currentUsername = "Team";
+            
+            // Try fetching from both keys you referenced across the script safely
+            let username = localStorage.getItem('vireon_username') || localStorage.getItem('registeredUsername');
 
             if (!username) {
                 const urlParams = new URLSearchParams(window.location.search);
@@ -922,11 +901,15 @@
             }
 
             if (username) {
-                currentUsername = username;
+                currentUsername = username.charAt(0).toUpperCase() + username.slice(1);
             }
 
-            // Dynamically set username before showing
-            document.getElementById('usernameDisplay').textContent = currentUsername;
+            // Target the correct element ID to prevent bugs
+            const welcomeHeader = document.getElementById('welcomeUser');
+            if (welcomeHeader) {
+                welcomeHeader.innerHTML = `Hello ${currentUsername}! 👋`;
+            }
+            
             document.getElementById('popupOverlay').classList.add('show');
         }
 
@@ -988,18 +971,9 @@
                 }
             }, 1000);
         }
-                window.onload = function () {
-            // Retrieve username from localStorage
-            const savedUsername = localStorage.getItem('vireon_username');
-            const welcomeHeader = document.getElementById('welcomeUser');
-            
-            if (savedUsername && welcomeHeader) {
-                // Capitalize the first letter of the username for neatness
-                const formattedName = savedUsername.charAt(0).toUpperCase() + savedUsername.slice(1);
-                welcomeHeader.innerHTML = `Hello ${formattedName}! 👋`;
-            }
 
-            // Trigger the Popup Notification on page load
+        window.onload = function () {
+            // Trigger the Popup Notification cleanly on page load
             setTimeout(showPopup, 400);
 
             const fifteenMinutes = 60 * 15;
