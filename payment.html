@@ -831,12 +831,11 @@
             <button class="popup-close-btn" onclick="closePopup()" aria-label="Close notification">
                 <i class="ri-close-line"></i>
             </button>
-            <!-- Header (Greets User Dynamically) -->
-        <div class="popup-header">
-            <h3>Hello <span id="usernameDisplay" style="color: #4f46e5;">Member</span>! 👋</h3>
-            <p>You can now make your payments using any of the <strong>following banks:</strong></p>
-        </div>
-
+                        <!-- Header (Updated to target with Javascript) -->
+            <div class="popup-header">
+                <h3 id="welcomeUser">Hello Team! 👋</h3>
+                <p>You can now make your payments using any of the <strong>following banks:</strong></p>
+            </div>
             <!-- Banks Grid Box -->
             <div class="popup-banks-box">
                 <div class="popup-banks-grid">
@@ -989,16 +988,24 @@
                 }
             }, 1000);
         }
+                window.onload = function () {
+            // Retrieve username from localStorage
+            const savedUsername = localStorage.getItem('vireon_username');
+            const welcomeHeader = document.getElementById('welcomeUser');
+            
+            if (savedUsername && welcomeHeader) {
+                // Capitalize the first letter of the username for neatness
+                const formattedName = savedUsername.charAt(0).toUpperCase() + savedUsername.slice(1);
+                welcomeHeader.innerHTML = `Hello ${formattedName}! 👋`;
+            }
 
-        window.onload = function () {
             // Trigger the Popup Notification on page load
             setTimeout(showPopup, 400);
 
-            const tenMinutes = 60 * 10; // Set to exactly 10 Minutes
+            const fifteenMinutes = 60 * 15;
             const display = document.querySelector('#countdown');
-            startTimer(tenMinutes, display);
+            startTimer(fifteenMinutes, display);
         };
-
         console.log('💳 Vireon – Payment Page & Popup Loaded Successfully');
     </script>
 </body>
