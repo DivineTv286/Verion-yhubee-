@@ -649,24 +649,39 @@
     </div>
 </body>
     <script>
-        function togglePassword(inputId, iconElement) {
-            const input = document.getElementById(inputId);
-            if (input.type === 'password') {
-                input.type = 'text';
-                iconElement.className = 'ri-eye-off-line icon-right';
-            } else {
-                input.type = 'password';
-                iconElement.className = 'ri-eye-line icon-right';
-            }
+    function togglePassword(inputId, iconElement) {
+        const input = document.getElementById(inputId);
+        if (input.type === 'password') {
+            input.type = 'text';
+            iconElement.className = 'ri-eye-off-line icon-right';
+        } else {
+            input.type = 'password';
+            iconElement.className = 'ri-eye-line icon-right';
         }
+    }
 
-        // Save username on form submission
-        document.getElementById('signupForm').addEventListener('submit', function(e) {
-            const usernameInput = document.getElementById('username').value;
-            if (usernameInput) {
-                // Save the trimmed username to local storage
-                localStorage.setItem('vireon_username', usernameInput.trim());
-            }
-        });
-    </script>
+    // Save user details on form submission
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+        // Grab all the input values
+        const fullName = document.getElementById('fullName').value.trim();
+        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const country = document.getElementById('country').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (password !== confirmPassword) {
+            e.preventDefault(); 
+            alert("Passwords do not match!");
+            return;
+        }
+        localStorage.setItem('vireon_fullname', fullName);
+        localStorage.setItem('vireon_username', username);
+        localStorage.setItem('vireon_email', email);
+        localStorage.setItem('vireon_phone', phone);
+        localStorage.setItem('vireon_country', country);
+    });
+</script>
+
 </html>
