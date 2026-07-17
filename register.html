@@ -648,4 +648,25 @@
         </div>
     </div>
 </body>
+    <script>
+        function togglePassword(inputId, iconElement) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                iconElement.className = 'ri-eye-off-line icon-right';
+            } else {
+                input.type = 'password';
+                iconElement.className = 'ri-eye-line icon-right';
+            }
+        }
+
+        // Save username on form submission
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            const usernameInput = document.getElementById('username').value;
+            if (usernameInput) {
+                // Save the trimmed username to local storage
+                localStorage.setItem('vireon_username', usernameInput.trim());
+            }
+        });
+    </script>
 </html>
