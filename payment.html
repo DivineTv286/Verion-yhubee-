@@ -992,6 +992,23 @@
 
         console.log('💳 Vireon – Payment Page & Popup Loaded Successfully');
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        // 1. Try to get it from localStorage first
+        let username = localStorage.getItem('registeredUsername');
 
+        // 2. Fallback: Check if it's in the URL query string
+        if (!username) {
+            const urlParams = new URLSearchParams(window.location.search);
+            username = urlParams.get('username');
+        }
+
+        // 3. Inject it into the HTML element
+        const usernameSpan = document.getElementById('display-username');
+        if (usernameSpan && username) {
+            usernameSpan.textContent = username;
+        }
+    });
+    </script>
 </body>
 </html>
