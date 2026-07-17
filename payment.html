@@ -800,12 +800,12 @@
                             copied=false;
                             timer=null;
                         },1500)
-                       ">
+                       " aria-label="Copy Account Number">
                         <svg viewBox="0 0 24 24" fill="CurrentColor" xmlns="http://www.w3.org/2000/svg" height="15" width="15"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"></path></svg>
                     </button>
                     </template>
                     <template x-if="copied">
-                        <button style="background:#00f2ff; color:#0a192f; border-color:#00f2ff;" class="copy-btn">
+                        <button style="background:#00f2ff; color:#0a192f; border-color:#00f2ff;" class="copy-btn" aria-label="Copied">
                             <svg viewBox="0 0 24 24" fill="CurrentColor" xmlns="http://www.w3.org/2000/svg" height="15" width="15"><path d="M4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12ZM12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM17.4571 9.45711L16.0429 8.04289L11 13.0858L8.20711 10.2929L6.79289 11.7071L11 15.9142L17.4571 9.45711Z"></path></svg>
                         </button>
                     </template>
@@ -813,8 +813,8 @@
                 
             </div>
 
-            <!-- ===== CONFIRM BUTTON ===== -->
-            <a href="https://t.me/Coachyhubee?text=Hi%20Vireon%20Merchant%20I%20Just%20Made%20My%20Payment%20of%20N14%2C500%20for%20Vireon%20Registration" target="_blank" class="btn-confirm">
+            <!-- ===== CONFIRM BUTTON WITH NEW TELEGRAM TEMPLATE ===== -->
+            <a href="https://t.me/Coachyhubee?text=Hi%20Vireon%20Merchant%2C%0A%0AI%20just%20made%20my%20payment%20of%20%E2%82%A614%2C500%20for%20my%20Vireon%20registration.%0A%0APlease%20find%20my%20proof%20of%20payment%20attached.%0A%0AMy%20details%3A%0A%0A-%20Phone%20Number%3A%20%0A-%20Email%20Address%3A%20%0A%0AKindly%20confirm%20my%20payment%20and%20proceed%20with%20my%20registration.%0A%0AThank%20you." target="_blank" class="btn-confirm">
                 I Have Paid <i class="ri-arrow-right-line" style="margin-left:8px;"></i>
             </a>
 
@@ -831,9 +831,9 @@
                 <i class="ri-close-line"></i>
             </button>
             
-            <!-- Header -->
+            <!-- Header (Greets User Dynamically) -->
             <div class="popup-header">
-                <h3>Hello Team! 👋</h3>
+                <h3>Hello <span id="usernameDisplay">Member</span>! 👋</h3>
                 <p>You can now make your payments using any of the <strong>following banks:</strong></p>
             </div>
 
@@ -908,9 +908,16 @@
     ============================================================ -->
     <script>
         // ============================================================
-        // POPUP NOTIFICATION INTERACTION
+        // POPUP NOTIFICATION INTERACTION & USERNAME SETTER
         // ============================================================
+        
+        // Define your fallback/dynamic username parameter here
+        // If integrating with backend PHP, replace the string below with: "<?php echo htmlspecialchars($username); ?>"
+        const currentUsername = "User"; 
+
         function showPopup() {
+            // Dynamically set username before showing
+            document.getElementById('usernameDisplay').textContent = currentUsername;
             document.getElementById('popupOverlay').classList.add('show');
         }
 
