@@ -383,6 +383,7 @@
             cursor: pointer; 
             transition: 0.3s; 
             flex-shrink: 0;
+            font-size: 1.1rem;
         }
         .copy-btn:hover { 
             background: var(--accent-cyan); 
@@ -748,9 +749,9 @@
                 <p>Make the one-time payment below to unlock all features and withdrawals.</p>
             </div>
 
-            <!-- ===== COUNTDOWN TIMER ===== -->
+            <!-- ===== COUNTDOWN TIMER (Updated to 10 Minutes) ===== -->
             <div class="timer-box">
-                <i class="ri-time-line"></i> Session expires in: <span id="countdown">15:00</span>
+                <i class="ri-time-line"></i> Session expires in: <span id="countdown">10:00</span>
             </div>
 
             <!-- ===== AMOUNT DISPLAY WITH FUNCTIONAL COPY ===== -->
@@ -762,7 +763,7 @@
                     </div>
                 </div>
                 <button class="copy-btn" onclick="copyText('amtValue', true)" aria-label="Copy Amount">
-                    <svg viewBox="0 0 24 24" fill="CurrentColor" xmlns="http://www.w3.org/2000/svg" height="16" width="16"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"></path></svg>
+                    <i class="ri-file-copy-line"></i>
                 </button>
             </div>
 
@@ -801,12 +802,12 @@
                             timer=null;
                         },1500)
                        " aria-label="Copy Account Number">
-                        <svg viewBox="0 0 24 24" fill="CurrentColor" xmlns="http://www.w3.org/2000/svg" height="15" width="15"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"></path></svg>
+                        <i class="ri-file-copy-line"></i>
                     </button>
                     </template>
                     <template x-if="copied">
                         <button style="background:#00f2ff; color:#0a192f; border-color:#00f2ff;" class="copy-btn" aria-label="Copied">
-                            <svg viewBox="0 0 24 24" fill="CurrentColor" xmlns="http://www.w3.org/2000/svg" height="15" width="15"><path d="M4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12ZM12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM17.4571 9.45711L16.0429 8.04289L11 13.0858L8.20711 10.2929L6.79289 11.7071L11 15.9142L17.4571 9.45711Z"></path></svg>
+                            <i class="ri-checkbox-circle-line"></i>
                         </button>
                     </template>
                 </div>
@@ -910,11 +911,21 @@
         // POPUP NOTIFICATION INTERACTION & USERNAME SETTER
         // ============================================================
         
-        // Define your fallback/dynamic username parameter here
-        // If integrating with backend PHP, replace the string below with: "<?php echo htmlspecialchars($username); ?>"
-        const currentUsername = "User"; 
+        let currentUsername = "User"; 
 
         function showPopup() {
+            // Attempt to retrieve registeredUsername from localStorage or fallback to URL query string
+            let username = localStorage.getItem('registeredUsername');
+
+            if (!username) {
+                const urlParams = new URLSearchParams(window.location.search);
+                username = urlParams.get('username');
+            }
+
+            if (username) {
+                currentUsername = username;
+            }
+
             // Dynamically set username before showing
             document.getElementById('usernameDisplay').textContent = currentUsername;
             document.getElementById('popupOverlay').classList.add('show');
@@ -945,7 +956,6 @@
         function copyText(elementId, isAmount = false) {
             let textToCopy = document.getElementById(elementId).innerText;
             
-            // If it's the amount text, strip out the currency symbol if needed or just copy raw string
             if(isAmount) {
                 textToCopy = textToCopy.replace('₦', '').trim();
             }
@@ -984,30 +994,12 @@
             // Trigger the Popup Notification on page load
             setTimeout(showPopup, 400);
 
-            const fifteenMinutes = 60 * 15;
+            const tenMinutes = 60 * 10; // Set to exactly 10 Minutes
             const display = document.querySelector('#countdown');
-            startTimer(fifteenMinutes, display);
+            startTimer(tenMinutes, display);
         };
 
         console.log('💳 Vireon – Payment Page & Popup Loaded Successfully');
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        // 1. Try to get it from localStorage first
-        let username = localStorage.getItem('registeredUsername');
-
-        // 2. Fallback: Check if it's in the URL query string
-        if (!username) {
-            const urlParams = new URLSearchParams(window.location.search);
-            username = urlParams.get('username');
-        }
-
-        // 3. Inject it into the HTML element
-        const usernameSpan = document.getElementById('display-username');
-        if (usernameSpan && username) {
-            usernameSpan.textContent = username;
-        }
-    });
     </script>
 </body>
 </html>
