@@ -821,12 +821,12 @@
     </div>
     <header class="top-header">
         <div class="user-greeting">
-            <div style="display:flex;align-items:center;justify-content:center;background:var(--accent-green);color:#0a192f;" class="avatar-header">
-                U            </div>
-            <div class="greeting-text">
-                <p>Welcome Back</p>
-                <h2>User</h2>
-            </div>
+            <div id="userAvatar" class="avatar-header">U</div>
+<div class="greeting-text">
+    <p>Welcome Back</p>
+    <h2 id="displayUsername">User</h2>
+</div>
+
         </div>
         <div class="header-controls">
             <button class="control-pill" onclick="toggleTheme()" aria-label="Toggle Dark Mode">
@@ -1357,6 +1357,36 @@
         document.head.appendChild(style);
 
         console.log('🚀 Vireon – Dashboard Loaded');
+
+        document.addEventListener('DOMContentLoaded', function() {
+    // 1. Retrieve the stored username from localStorage
+    const storedUsername = localStorage.getItem('vireon_username');
+
+    const usernameDisplay = document.getElementById('displayUsername');
+    const avatarDisplay = document.getElementById('userAvatar');
+
+    if (storedUsername && storedUsername.trim() !== '') {
+        const cleanUsername = storedUsername.trim();
+
+        // 2. Set the displayed username
+        if (usernameDisplay) {
+            usernameDisplay.textContent = cleanUsername;
+        }
+
+        // 3. Extract the first 2 letters for the avatar initials
+        const initials = cleanUsername.substring(0, 2).toUpperCase();
+
+        // 4. Update the avatar placeholder
+        if (avatarDisplay) {
+            avatarDisplay.textContent = initials;
+        }
+    } else {
+        // Fallback for guests or unauthenticated visitors
+        if (usernameDisplay) usernameDisplay.textContent = 'Guest';
+        if (avatarDisplay) avatarDisplay.textContent = 'GU';
+    }
+});
+
     </script>
 
 </body>
